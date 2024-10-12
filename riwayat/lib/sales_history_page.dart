@@ -32,7 +32,7 @@ class _SalesHistoryPageState extends State<SalesHistoryPage> {
       'memberDiscount': 10000,
       'total': 125000
     },
-    {
+     {
       'customer': 'Customer 8',
       'time': '21/09/2024 - 10:16 AM',
       'paymentSource': 'Mas Rusdi',
@@ -129,6 +129,7 @@ class _SalesHistoryPageState extends State<SalesHistoryPage> {
       'memberDiscount': 20000,
       'total': 135000
     },
+    // Tambahan data lain
   ];
 
   @override
@@ -193,7 +194,49 @@ class _SalesHistoryPageState extends State<SalesHistoryPage> {
         children: [
           Row(
             children: [
-              Icon(Icons.credit_card, color: Colors.grey),
+              if (sale['paymentMethod'] == 'QRIS')
+                // QRIS Icon Sederhana
+                Container(
+                  width: 50,
+                  height: 50,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(8.0),
+                    color: Colors.grey[300],
+                  ),
+                  child: Center(
+                    child: Text(
+                      'QRIS',
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+                ),
+
+              if (sale['paymentMethod'] == 'Tunai')
+                Icon(Icons.attach_money, color: Colors.grey),
+              if (sale['paymentMethod'] == 'Debit')
+                Icon(Icons.credit_card, color: Colors.grey), // Default ikon debit
+
+              // Komentar: jika perlu ganti gambar QRIS
+              /*
+              if (sale['paymentMethod'] == 'QRIS')
+                Image.asset(
+                  'assets/qris_image.png', // Path gambar QRIS
+                  width: 50,
+                  height: 50,
+                ),
+              */
+
+              // Tambahkan di sini jika ingin membedakan Bank A, Bank B, dsb
+              /*
+              if (sale['paymentMethod'] == 'Debit' && sale['paymentSource'] == 'Bank BCA')
+                Icon(Icons.credit_card, color: Colors.blue),
+              if (sale['paymentMethod'] == 'Debit' && sale['paymentSource'] == 'Bank Mandiri')
+                Icon(Icons.credit_card, color: Colors.yellow),
+              */
+
               SizedBox(width: 8),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -214,19 +257,12 @@ class _SalesHistoryPageState extends State<SalesHistoryPage> {
                 ],
               ),
               Spacer(),
-              if (sale['paymentMethod'] == 'QRIS')
-                Container(
-                  width: 50,
-                  height: 50,
-                  color: Colors.grey[300],
-                  child: Center(child: Text('QRIS')),
-                ),
             ],
           ),
           SizedBox(height: 8),
           ...sale['items'].map<Widget>((item) {
             return Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween, // Perbaikan di sini
               children: [
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -249,10 +285,9 @@ class _SalesHistoryPageState extends State<SalesHistoryPage> {
             );
           }).toList(),
           SizedBox(height: 8),
-          // Pindahkan Divider ke atas Total
           Divider(color: Color(0xFF213F84)),
           Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween, // Perbaikan di sini
             children: [
               Text(
                 'Total:',
